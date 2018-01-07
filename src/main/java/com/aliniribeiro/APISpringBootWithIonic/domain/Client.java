@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.aliniribeiro.APISpringBootWithIonic.domain.enums.ClientType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Client implements Serializable {
@@ -34,6 +35,7 @@ public class Client implements Serializable {
 	 * Endereço o cliente foi mapeado pelo campo client.
 	 */
 	@OneToMany(mappedBy = "client")
+	@JsonManagedReference
 	private List<Address> addresses = new ArrayList<>();
 
 	/**
