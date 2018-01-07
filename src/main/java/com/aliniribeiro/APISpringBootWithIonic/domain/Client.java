@@ -38,6 +38,7 @@ public class Client implements Serializable {
 	@JsonManagedReference
 	private List<Address> addresses = new ArrayList<>();
 
+	private List<Order> orders = new ArrayList<>();
 	/**
 	 * Estas anotaçoes criam na tabela um elemento auxíliar com o nome phone.
 	 */
@@ -140,6 +141,14 @@ public class Client implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 }

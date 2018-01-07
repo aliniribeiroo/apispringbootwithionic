@@ -1,13 +1,13 @@
 package com.aliniribeiro.APISpringBootWithIonic.domain.enums;
 
-public enum ClientType {
+public enum PaymentState {
 
-	PESSOAFISICA(1, "Pessoa Física"), PESSOAJURIDICA(2, "Pessoa Jurídica");
+	PENDENTE(1, "Pendente"), QUITADO(2, "Quitado"), CANCELADO(3, "Cancelado");
 
 	private int cod;
 	private String description;
 
-	private ClientType(int cod, String description) {
+	private PaymentState(int cod, String description) {
 		this.cod = cod;
 		this.description = description;
 	}
@@ -20,13 +20,13 @@ public enum ClientType {
 		return description;
 	}
 
-	public static ClientType toEnum(Integer cod) {
+	public static PaymentState toEnum(Integer cod) {
 
 		if (cod == null) {
 			return null;
 		}
 
-		for (ClientType x : ClientType.values()) {
+		for (PaymentState x : PaymentState.values()) {
 			if (cod.equals(x.getCod())) {
 				return x;
 			}
