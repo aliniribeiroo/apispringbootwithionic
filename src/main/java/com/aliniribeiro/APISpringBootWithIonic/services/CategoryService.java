@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.aliniribeiro.APISpringBootWithIonic.domain.Category;
 import com.aliniribeiro.APISpringBootWithIonic.repository.CategoryRepository;
+import com.aliniribeiro.APISpringBootWithIonic.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoryService {
@@ -14,6 +15,10 @@ public class CategoryService {
 	
 	public Category find(Integer id) {
 		Category category = categoryRepository.findOne(id);
+		if (category == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado "+ id
+					+ " Tipo: " + Category.class.getName());
+		}
 		return category;
 	}
 }
