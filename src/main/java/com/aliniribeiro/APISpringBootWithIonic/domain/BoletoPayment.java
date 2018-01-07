@@ -2,8 +2,11 @@ package com.aliniribeiro.APISpringBootWithIonic.domain;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import com.aliniribeiro.APISpringBootWithIonic.domain.enums.PaymentState;
 
+@Entity
 public class BoletoPayment extends Payment {
 
 	private static final long serialVersionUID = 1L;

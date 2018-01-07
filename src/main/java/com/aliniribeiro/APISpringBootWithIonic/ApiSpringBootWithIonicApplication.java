@@ -1,5 +1,6 @@
 package com.aliniribeiro.APISpringBootWithIonic;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,23 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.aliniribeiro.APISpringBootWithIonic.domain.Address;
+import com.aliniribeiro.APISpringBootWithIonic.domain.BoletoPayment;
+import com.aliniribeiro.APISpringBootWithIonic.domain.CardPayment;
 import com.aliniribeiro.APISpringBootWithIonic.domain.Category;
 import com.aliniribeiro.APISpringBootWithIonic.domain.City;
 import com.aliniribeiro.APISpringBootWithIonic.domain.Client;
+import com.aliniribeiro.APISpringBootWithIonic.domain.Order;
+import com.aliniribeiro.APISpringBootWithIonic.domain.Payment;
 import com.aliniribeiro.APISpringBootWithIonic.domain.Product;
 import com.aliniribeiro.APISpringBootWithIonic.domain.State;
 import com.aliniribeiro.APISpringBootWithIonic.domain.enums.ClientType;
+import com.aliniribeiro.APISpringBootWithIonic.domain.enums.PaymentState;
 import com.aliniribeiro.APISpringBootWithIonic.repository.AddressRepository;
 import com.aliniribeiro.APISpringBootWithIonic.repository.CategoryRepository;
 import com.aliniribeiro.APISpringBootWithIonic.repository.CityRepository;
 import com.aliniribeiro.APISpringBootWithIonic.repository.ClientRepository;
+import com.aliniribeiro.APISpringBootWithIonic.repository.OrderRepository;
+import com.aliniribeiro.APISpringBootWithIonic.repository.PaymentRepository;
 import com.aliniribeiro.APISpringBootWithIonic.repository.ProductRepository;
 import com.aliniribeiro.APISpringBootWithIonic.repository.StateRepository;
 
@@ -42,7 +50,11 @@ public class ApiSpringBootWithIonicApplication implements CommandLineRunner {
 	@Autowired
 	private AddressRepository addressRepository;
 	
+	@Autowired
+	private OrderRepository orderRepository;
 	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiSpringBootWithIonicApplication.class, args);
@@ -89,6 +101,23 @@ public class ApiSpringBootWithIonicApplication implements CommandLineRunner {
 		Address address1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "3822084", client1, city1);
 		Address address2 = new Address(null, "Avenida Mattos", "105", "Sala 800", "Centro", "38777012", client1, city2);
 		addressRepository.save(Arrays.asList(address1, address2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Order order1 = new Order(null, sdf.parse("30/09/2017 10:32"), address1, client1);	
+		Order order2 = new Order(null, sdf.parse("10/10/2017 19:35"), address2, client1);	
+		
+		Payment payment1 = new CardPayment(null, PaymentState.QUITADO, order1, 6);
+		order1.setPayment(payment1);
+		
+		Payment payment2 = new BoletoPayment(null, PaymentState.PENDENTE, order2, sdf.parse("20/10/2017 00:00"), null);
+		order2.setPayment(payment2);
+
+		client1.getOrders().addAll(Arrays.asList(order1, order2));
+	
+		orderRepository.save(Arrays.asList(order1, order2));
+		paymentRepository.save(Arrays.asList(payment1, payment2));
+		
 		
 	}
 }

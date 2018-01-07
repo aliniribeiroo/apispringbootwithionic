@@ -38,6 +38,7 @@ public class Client implements Serializable {
 	@JsonManagedReference
 	private List<Address> addresses = new ArrayList<>();
 
+	@OneToMany(mappedBy="client")
 	private List<Order> orders = new ArrayList<>();
 	/**
 	 * Estas anotaçoes criam na tabela um elemento auxíliar com o nome phone.

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -11,13 +13,14 @@ import javax.persistence.OneToOne;
 import com.aliniribeiro.APISpringBootWithIonic.domain.enums.PaymentState;
 
 @Entity
-public class Payment implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class Payment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Integer id;
-	private PaymentState state;
+	private Integer state;
 	
 	/**
 	 * Esta anotaçao indica que  o Id do pedido será o mesmo Id do pagamento.
@@ -34,7 +37,7 @@ public class Payment implements Serializable {
 	public Payment(Integer id, PaymentState state, Order order) {
 		super();
 		this.id = id;
-		this.state = state;
+		this.state = state.getCod();
 		this.order = order;
 	}
 
@@ -47,11 +50,11 @@ public class Payment implements Serializable {
 	}
 
 	public PaymentState getState() {
-		return state;
+		return PaymentState.toEnum(state);
 	}
 
 	public void setState(PaymentState state) {
-		this.state = state;
+		this.state = state.getCod();
 	}
 
 	public Order getOrder() {
